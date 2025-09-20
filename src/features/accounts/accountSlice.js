@@ -45,16 +45,12 @@ export function deposit(amount, currency) {
   return async function (dispatch, getStete) {
     dispatch({ type: "convertingCurrency" });
     //API CALL (middle ware)
+
     const res = await fetch(
       `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`
     );
     const data = await res.json();
-    // console.log(data);
-    if (!data.rates || !data.rates.USD) {
-      // fallback لو API مرجعش rates
-      dispatch({ type: "account/deposit", payload: amount });
-      return;
-    }
+
     const converted = data.rates.USD;
 
     //return action after middleware
